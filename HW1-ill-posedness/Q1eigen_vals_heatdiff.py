@@ -8,7 +8,7 @@ import numpy as np
 from matplotlib import cm         #color map
 
 
-eigen_cont = lambda k,T,L,i: np.exp(-k*T*(2*np.pi/L)**2*i**2) #eigen value of continuous operator
+eigen_cont = lambda k,T,L,i: np.exp(-k*T*(np.pi/L)**2*i**2) #eigen value of continuous operator
 eigen_disc = lambda dt,k,h,i,nx,nt: (1 + dt*k*4/h**2*(np.sin(np.pi*i/(2*nx)))**2)**(-nt) #eigen value of discrete operator
 
 #Colors
@@ -22,6 +22,8 @@ brown  = [155/255 ,  118/255 ,  83/255]
 tan    = [199/255 , 178/255 , 153/255]
 gray   = [100/255 , 100/255 , 100/255]
 
+color_array = [red,green,orange,brown,blue,purple]
+
 
 #PART (c)
 #Parameters
@@ -33,13 +35,8 @@ nt= 100#Number of cells in time
 i = np.linspace(1,nx - 1,nx - 1) #Modes
 h = L/nx #Cell sixe
 dt= T/nt #Time step
-
-
 k_array = np.logspace(-4,0,5)
 
-Reds = cm.get_cmap('Reds', len(k_array)*2)
-Blues = cm.get_cmap('Blues', len(k_array)*2)
-color_array = [red,green,orange,brown,blue,purple]
 
 plt.figure(figsize=(15,10))
 for count, k in enumerate(k_array):
@@ -52,3 +49,31 @@ plt.ylabel(r'$\lambda_i$')
 
 plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
 plt.savefig(f"1c_discvscont_evals.png")
+
+
+#PART (d)
+#Parameters
+T = 0.1 #Final time
+L = 1 #Length of the domain [0,1]
+k = 0.01#Diffusion coefficient
+
+nxnt = [160,80,40,20]
+
+plt.figure(figsize=(15,10))
+for count, nx in enumerate(nxnt):
+    i = np.linspace(1,nx- 1,nx - 1) #Modes
+    nt = nx
+    h = L/nx #Cell sixe
+    dt= T/nt #Time step
+    plot = plt.semilogy(i,eigen_disc(dt,k,h,i,nx,nt),'ro',c=color_array[count],label=f'({nx},{nt})')
+
+i = np.linspace(1,160 - 1,160 - 1) #Modes
+
+plot = plt.semilogy(i,eigen_cont(k,T,L,i),'k--',label=f'Analytical')
+
+plt.legend(loc='lower left')
+plt.xlabel(r'$i$')
+plt.ylabel(r'$\lambda_i$')
+
+plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
+plt.savefig(f"1d_discvscont_eval_discretization.png")
