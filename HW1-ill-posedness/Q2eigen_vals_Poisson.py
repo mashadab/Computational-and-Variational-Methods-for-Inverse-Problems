@@ -6,6 +6,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm         #color map
+plt.rcParams.update({'font.family': "Serif"})
+plt.rcParams.update({'font.size': 22})
 
 
 eigen_cont = lambda k,L,i: 1/(k*(i*np.pi/L)**2) #eigen value of continuous operator
@@ -35,12 +37,12 @@ h = L/nx #Cell sixe
 k_array = [1]
 
 
-plt.figure(figsize=(15,10))
+plt.figure(figsize=(12,10))
 for count, k in enumerate(k_array):
     plot = plt.semilogy(i,eigen_cont(k,L,i),c=color_array[count],label=r'$\mathcal{F}, k=%0.4f$'%k)
     plot = plt.semilogy(i,eigen_disc(k,h,i,nx),'ro',c=color_array[count],label=r'$ {\bf{F}}, k=%0.4f$'%k)
 
-plt.legend(loc='upper left')
+plt.legend(loc='best')
 plt.xlabel(r'$i$')
 plt.ylabel(r'$\lambda_i$')
 

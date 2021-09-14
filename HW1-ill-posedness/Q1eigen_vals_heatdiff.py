@@ -2,10 +2,11 @@
 #Mohammad Afzal Shadab
 #Date modified: 09/04/21
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm         #color map
+plt.rcParams.update({'font.family': "Serif"})
+plt.rcParams.update({'font.size': 22})
 
 
 eigen_cont = lambda k,T,L,i: np.exp(-k*T*(np.pi/L)**2*i**2) #eigen value of continuous operator
@@ -29,7 +30,7 @@ color_array = [red,green,orange,brown,blue,purple]
 #Parameters
 T = 1 #Final time
 L = 1 #Length of the domain [0,1]
-nx= 200#Number of cellls in x
+nx= 100#Number of cellls in x
 nt= 100#Number of cells in time
 
 i = np.linspace(1,nx - 1,nx - 1) #Modes
@@ -38,12 +39,12 @@ dt= T/nt #Time step
 k_array = np.logspace(-4,0,5)
 
 
-plt.figure(figsize=(15,10))
+plt.figure(figsize=(12,10))
 for count, k in enumerate(k_array):
-    plot = plt.semilogy(i,eigen_cont(k,T,L,i),c=color_array[count],label=r'$\mathcal{F}, k=%0.4f$'%k)
-    plot = plt.semilogy(i,eigen_disc(dt,k,h,i,nx,nt),'ro',c=color_array[count],label=r'$ {\bf{F}}, k=%0.4f$'%k)
+    plot = plt.semilogy(i,eigen_cont(k,T,L,i),c=color_array[count],label=r'$k=%0.4f$'%k)
 
-plt.legend(bbox_to_anchor=(1.05, 1.0, 0.3, 0.2), loc='upper left')
+plt.legend(loc='best')
+plt.ylim([1e-16,10])
 plt.xlabel(r'$i$')
 plt.ylabel(r'$\lambda_i$')
 
@@ -59,7 +60,7 @@ k = 0.01#Diffusion coefficient
 
 nxnt = [160,80,40,20]
 
-plt.figure(figsize=(15,10))
+plt.figure(figsize=(12,10))
 for count, nx in enumerate(nxnt):
     i = np.linspace(1,nx- 1,nx - 1) #Modes
     nt = nx
@@ -73,6 +74,8 @@ plot = plt.semilogy(i,eigen_cont(k,T,L,i),'k--',label=f'Analytical')
 
 plt.legend(loc='lower left')
 plt.xlabel(r'$i$')
+plt.xlim([0,80])
+plt.ylim([1e-16,10])
 plt.ylabel(r'$\lambda_i$')
 
 plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)

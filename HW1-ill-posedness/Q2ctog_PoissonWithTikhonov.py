@@ -1,16 +1,13 @@
-# File for solving the inverse problem for poisson PDE
-# Domain x \in (0, L)
-# PDE:
-#   -k \Laplacian u = m(x) 
-#              u(0) = 0
-#              u(L) = 0
-# Data: u(x) + noise
-# Paramter: m(x)
+#Decay of Eigenvalues in 1D Poisson problem
+#Mohammad Afzal Shadab
+#Date modified: 08/13/21
 
 import numpy as np 
 import matplotlib.pyplot as plt 
 import scipy.sparse as sp
 import scipy.sparse.linalg as la 
+plt.rcParams.update({'font.family': "Serif"})
+plt.rcParams.update({'font.size': 22})
 
 SMALL_FONT = 16
 MEDIUM_FONT = 20
@@ -97,6 +94,86 @@ def solveTikhonov(d, F, alpha):
     return np.linalg.solve(H, rhs)
 
 
+##############################################################################
+
+if __name__ == '__main__':
+    n_array = [10, 20, 40, 80, 160]
+    k_array = [1, 0.01, 0.0001]
+    noises = [1e-2, 1e-4, 1e-6]
+    for noise_sigma in noises:
+        for k in k_array:
+            for nx in n_array:
+                np.random.seed(100)
+                #k = 0.01
+                L = 1 
+                #nx = 80 # number of elements
+                h = L/nx
+        
+                x = np.linspace(0, L, nx+1)
+                m_true = mTrueFun(x)
+        
+                K = assembleMatrix(k,h,nx-1)
+                F = assembleF(K, nx-1)
+        
+                x_interior = x[1:-1]
+                f_true = m_true[1:-1] # interior nodes of the force 
+        
+                # solving the system for true m 
+                u_true = solveFwd(K, f_true)
+        
+                # converting to plotting by adding endpoints
+                u_plot = np.zeros(x.shape)
+                u_plot[1:-1] = u_true
+        
+                # generate data
+                d_plot = generateData(u_plot, noise_sigma)
+                d = d_plot[1:-1]
+        
+                plt.figure(figsize=FIG_SIZE)
+                plt.plot(x, m_true, 'k')
+                plt.title("$m_{true}$")
+        
+                plt.savefig(PATH + "figures/p2_part_c_true_m.png")
+        
+                plt.figure(figsize=FIG_SIZE_SMALL)
+                plt.plot(x, u_plot, '-k')
+                plt.plot(x, d_plot, 'ob')
+                plt.title("$\sigma = %.0e$, $k = %.0e$, $n_x = %d$" %(noise_sigma, k, nx))
+                plt.legend(["$u_{true}$", "Noisy data"])
+        
+                plt.savefig(PATH + "figures/p2_part_c_data_k=%.0e_n=%d_noise=%.0e.png" %(k, nx, noise_sigma))
+        
+                ##############################################################################
+        
+                # c. now solve the inverse problem naively with inversion of the operator K 
+        
+                m_naive = applyInvF(K, d)
+        
+                plt.figure(figsize=FIG_SIZE_SMALL)
+                plt.plot(x, m_true, '-k')
+                plt.plot(x_interior, m_naive, 'or')
+                plt.legend(["True m", "Estimated m"])
+                plt.title("$\sigma = %.0e$, $k = %.0e$, $n_x = %d$" %(noise_sigma, k, nx))
+        
+                plt.savefig(PATH + "figures/p2_partC_mOpt_k=%.0e_n=%d_noise=%.0e.png" %(k, nx, noise_sigma))
+        
+                # prediction 
+        
+                u_naive = la.spsolve(K, m_naive)
+                plt.figure(figsize=FIG_SIZE_SMALL)
+                plt.plot(x_interior, u_true, '-k')
+                plt.plot(x_interior, d, 'ob')    
+                plt.plot(x_interior, u_naive, 'or', markersize=3)
+        
+                plt.legend(["True u", "Noisy data", "Predicted u"])
+                plt.title("$\sigma = %.0e$, $k = %.0e$, $n_x = %d$" %(noise_sigma, k, nx))
+        
+                plt.savefig(PATH + "figures/p2_partC_uPred_k=%.0e_n=%d_noise=%.0e.png" %(k, nx, noise_sigma))
+
+#######################################
+
+
+#(d) Solving inverse problem with Tikhanov regularization
 
 FIG_SIZE = (12,8)
 np.random.seed(100)
@@ -123,21 +200,17 @@ u_plot = np.zeros(x.shape)
 u_plot[1:-1] = u_true
 
 # generate data
-noise_variance = 0
-noise_sigma = np.sqrt(noise_variance)
-noise_sigma = 1e-2
+noise_sigma = 1e-4
 d_plot = generateData(u_plot, noise_sigma)
 d = d_plot[1:-1]
 
 plt.figure()
 plt.plot(x, m_true, 'k')
-plt.grid(True)
 plt.title("$m_{true}$")
 
 plt.figure()
 plt.plot(x, u_plot, '-k')
 plt.plot(x, d_plot, 'ob')
-plt.grid(True)
 plt.title("Synthetic observations")
 plt.legend(["$u_{true}$", "Noisy data"])
 
@@ -145,11 +218,11 @@ plt.show()
 
 ##############################################################################
 
-alphas = np.array([0.0001, 0.001, 0.01, 0.1, 1])
-colors = ['b', 'r', 'g', 'c', 'm']
+alphas = np.logspace(-7,-2,6)
+colors = ['r', 'g', 'b', 'c', 'm', 'y']
 
-legend_reg = ["$\\alpha = %f$" %(alpha) for alpha in alphas]
-legend = ["Truth"] + legend_reg 
+legend_reg = ["$\\alpha = %.0e$" %(alpha) for alpha in alphas]
+legend = ["True value"] + legend_reg 
 
 plt.figure(figsize=FIG_SIZE)
 plt.plot(x, m_true, '-k')
@@ -157,17 +230,15 @@ plt.plot(x, m_true, '-k')
 for (alpha, c) in zip(alphas, colors):
     m_reg = solveTikhonov(d, F, alpha)
     plt.plot(x_interior, m_reg, color = c)
-plt.legend(legend, loc="lower right")
-plt.title("Inversion results with regularization")
-plt.axis([0, 1, -1.0, 1.2])
-plt.grid(True)
+plt.legend(legend, loc="best")
+plt.title("Inversion with Tikhanov regularization")
+plt.axis([0, 1, -0.01, 1.11])
 plt.savefig(PATH + "figures/p2_part_d_regularization_%.0e.png" %(alphas[0]))
 plt.show()
 
 ##############################################################################
 
-# L-curve vs morozov discrepancy 
-# also compare with exact solution 
+# (e) L-curve criterion
 
 delta = np.linalg.norm(d - u_true)
 
@@ -187,7 +258,6 @@ for ii in range(alphas.size):
 
 plt.figure(figsize=FIG_SIZE)
 plt.loglog(norm_residual, norm_m, '-ob')
-plt.grid(True, which="both")
 plt.xlabel("$\|Fm-d\|$")
 plt.ylabel("$\|m\|$")
 plt.title("L-curve")
@@ -195,23 +265,25 @@ plt.savefig(PATH + "figures/p2_part_e_lCurve_%.0e.png" %(alphas[0]))
 
 delta_plot = np.ones(alphas.shape) * delta
 
+# (f) Morozov discrepancy criterion
+
 plt.figure(figsize=FIG_SIZE)
 plt.loglog(alphas, norm_residual, '-ob')
 plt.loglog(alphas, delta_plot, '--k')
-plt.grid(True, which="both")
 plt.xlabel("$\\alpha$")
 plt.ylabel("$\|Fm-d\|$")
 plt.legend(["Regularized solution", "$\delta$"])
-plt.title("Morozov discrepancy principle")
+plt.title("Morozov discrepancy criteria")
 plt.savefig(PATH + "figures/p2_part_f_morozov_%.0e.png" %(alphas[0]))
 plt.show()
 
+# (g) Error in reconstruction
+
 plt.figure(figsize=FIG_SIZE)
 plt.loglog(alphas, norm_diff_true, '-ob')
-plt.grid(True, which="both")
 plt.xlabel("$\\alpha$")
 plt.ylabel("$\|m-m_{true}\|$")
-plt.title("Comparison with $m_{true}$")
+plt.title("Error in reconstruction: $m_{true}$ comparison")
 plt.savefig(PATH + "figures/p2_part_g_bestAlpha_%.0e.png" %(alphas[0]))
 plt.show()
 
