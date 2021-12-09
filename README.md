@@ -30,7 +30,7 @@ I would like to acknowledge Professor Omar Ghattas for teaching the course on 'C
 
 
 
-## Solving the Advection-Diffusion-Reaction Inverse problem for diffusion field m ([Homework 4](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW4-Hessian-action/Provided/HW4_afzal.pdf) and [Homework 5](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW5-transient-NewtonCG/HW5_afzal_final.pdf))
+## Solving the Advection-Diffusion-Reaction Inverse problem for diffusion coefficient field m(**x**) ([Homework 4](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW4-Hessian-action/Provided/HW4_afzal.pdf) and [Homework 5](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW5-transient-NewtonCG/HW5_afzal_final.pdf))
 <p align="center">
 <img src="./HW4-Hessian-action/Provided/Results/2_1part_a-1.png" height="500">                                            
 </p>
