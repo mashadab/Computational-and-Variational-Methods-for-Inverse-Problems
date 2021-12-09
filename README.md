@@ -22,7 +22,7 @@ The codes requires the following packages to function:
 
 
 ### Quick Usage
-After cloning the repository and installing the required libraries, run the python files given in the separate folders. Codes can be run either directly or on an IDE such as Anaconda Spyder. 
+After cloning the repository and installing the required libraries, run the jupyter notebook (.ipynb) or python files (.py) files given in the separate folders. Python codes can be run either directly or on an IDE such as Anaconda Spyder.
 
 
 ## Acknowledgement
