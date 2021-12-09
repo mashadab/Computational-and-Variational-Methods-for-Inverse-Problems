@@ -25,4 +25,4 @@ After cloning the repository and installing the required libraries, run the pyth
 
 
 ## Acknowledgement
-I would like to acknowledge Professor Omar Ghattas for teaching the course on 'Computational and Variational Methods for Inverse Problems' in 2021. His open-source review paper with Professor Karen Willcox has most of the theory circumscribing these codes which can be found [here](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/C072A4B417F8C3873ED75C1D63BBB31D/S0962492921000064a.pdf/learning-physics-based-models-from-data-perspectives-from-inverse-problems-and-model-reduction.pdf).
+I would like to acknowledge Professor Omar Ghattas for teaching the course on 'Computational and Variational Methods for Inverse Problems' in 2021 and providing some basic codes to get started. His open-source review paper with Professor Karen Willcox has most of the theory circumscribing these codes which can be found [here](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/C072A4B417F8C3873ED75C1D63BBB31D/S0962492921000064a.pdf/learning-physics-based-models-from-data-perspectives-from-inverse-problems-and-model-reduction.pdf).
