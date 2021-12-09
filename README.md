@@ -13,6 +13,7 @@ This repo has all the codes which became a part of the assignments for inverse m
 
 The codes requires the following packages to function:
 - [Python](https://www.python.org/) version 3.5+
+- [Jupyter](https://jupyter.org/)
 - [Numpy](http://www.numpy.org/) >= 1.16
 - [scipy](https://www.scipy.org/) >=1.5
 - [matplotlib](https://matplotlib.org/) >=3.3.4
