@@ -27,3 +27,10 @@ After cloning the repository and installing the required libraries, run the jupy
 
 ## Acknowledgement
 I would like to acknowledge Professor Omar Ghattas for teaching the course on 'Computational and Variational Methods for Inverse Problems' in 2021 and providing some basic codes to get started. His open-source review paper with Professor Karen Willcox has most of the theory circumscribing these codes which can be found [here](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/C072A4B417F8C3873ED75C1D63BBB31D/S0962492921000064a.pdf/learning-physics-based-models-from-data-perspectives-from-inverse-problems-and-model-reduction.pdf).
+
+
+
+## Solving the Advection-Diffusion-Reaction Inverse problem for diffusion field m ([Homework 4](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW4-Hessian-action/Provided/HW4_afzal.pdf) and [Homework 5](https://github.com/mashadab/Computational-and-Variational-Methods-for-Inverse-Problems/blob/main/HW5-transient-NewtonCG/HW5_afzal_final.pdf))
+<p align="center">
+<img src="./HW4-Hessian-action/Provided/Results/2_1part_a.png height="370">
+</p>
