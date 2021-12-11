@@ -6,7 +6,7 @@
 Oden Institute for Computational Engineering and Sciences / Jackson School of Geosciences / University of Texas Institute for Geophysics
 The University of Texas at Austin
 
-## 2-line Summary
+## One-line Summary
 This repo has all the codes which became a part of the assignments for inverse modeling course
 
 
